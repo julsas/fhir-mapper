@@ -1,0 +1,54 @@
+{
+  "resourceType": "Medication",
+  "id": "demo-medication-3",
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "116602009",
+        "display": "Prednisone (substance)"
+      },
+      {
+        "system": "http://www.whocc.no/atc",
+        "code": "H02AB07",
+        "display": "prednisone"
+      }
+    ],
+    "text": "Deltacortene tablet 25 mg"
+  },
+  "form": {
+    "coding": [
+      {
+        "system": "urn:oid:0.4.0.127.0.16.1.1.2.1",
+        "code": "10219000",
+        "display": "Tablet"
+      }
+    ]
+  },
+  "ingredient": [
+    {
+      "itemCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "116602009",
+            "display": "Prednisone (substance)"
+          }
+        ]
+      },
+      "amount": {
+        "numerator": {
+          "value": 25,
+          "system": "http://unitsofmeasure.org",
+          "code": "mg"
+        },
+        "denominator": {
+          "value": 1,
+          "unit": "tablet",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    }
+  ]
+}
