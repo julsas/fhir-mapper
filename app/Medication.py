@@ -1,5 +1,3 @@
-#import json
-#from pydantic.json import pydantic_encoder
 from fhir.resources.STU3.medication import (Medication as MedicationSTU3)
 from fhir.resources.medication import (Medication as MedicationR4, MedicationIngredient as MedicationIngredientR4, MedicationBatch as MedicationBatchR4)
 
@@ -8,6 +6,8 @@ def transform_medication_3to4(json_data):
     medication_3 = medication_3.dict()
     medication_4 = MedicationR4.construct()
     medication_4.id = medication_3.get('id', None)
+    medication_4.text = medication_3.get('text', None)
+    medication_4.contained = medication_3.get('contained', None)
     medication_4.code = medication_3.get('code', None)
     medication_4.status = medication_3.get('status', None)
     medication_4.manufacturer = medication_3.get('manufacturer', None)
@@ -35,5 +35,4 @@ def transform_medication_3to4(json_data):
                 batch_4.expirationDate = batch.get('expirationDate', None)
                 batch_4.lotNumber = batch.get('lotNumber', None)
         medication_4.batch = batch_4
-        #medication_4 = medication_4.dict()
     return medication_4.dict()
