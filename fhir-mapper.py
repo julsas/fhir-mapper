@@ -1,3 +1,4 @@
+from app.MedicationStatement import transform_medication_statement_3to4
 from app.CapabilityStatement import create_capabiliy_statement
 import json
 from flask.json import JSONEncoder
@@ -25,8 +26,15 @@ class Medication(Resource):
         transformed_resource = transform_medication_3to4(resource)
         return jsonify(transformed_resource)
 
+class MedicationStatement(Resource):
+    def post(self):
+        resource = request.get_json()
+        transformed_resource = transform_medication_statement_3to4(resource)
+        return jsonify(transformed_resource)
+
 api.add_resource(CapabilityStatement, "/metadata")
 api.add_resource(Medication, "/Medication")
+api.add_resource(MedicationStatement, "/MedicationStatement")
 
 if __name__ == "__main__":
     app.run(debug=True)
