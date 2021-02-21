@@ -35,4 +35,4 @@ def transform_medication_3to4(json_data):
                 batch_4.expirationDate = batch.get('expirationDate', None)
                 batch_4.lotNumber = batch.get('lotNumber', None)
         medication_4.batch = batch_4
-    return medication_4.dict()
+    return medication_4

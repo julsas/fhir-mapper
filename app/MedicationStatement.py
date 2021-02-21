@@ -119,4 +119,4 @@ def transform_medication_statement_3to4(json_data):
             dosage_4.maxDosePerLifetime = dosage.get('maxDosePerLifetime', None)
             dosages.append(dosage_4)
         medication_statement_4.dosage = dosages
-    return medication_statement_4.dict()
+    return medication_statement_4

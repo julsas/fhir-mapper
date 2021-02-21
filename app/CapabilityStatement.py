@@ -74,7 +74,7 @@ def create_capabiliy_statement():
         capability_statement_rest_resource.interaction = [capability_statement_rest_resource_interaction]
         capability_statement_rest_resources.append(capability_statement_rest_resource)
     capability_statement_rest.resource = capability_statement_rest_resources
-    return capability_statement.dict()
+    return capability_statement
 
 
 
