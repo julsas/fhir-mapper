@@ -8,6 +8,8 @@ def transform_medication_3to4(json_data):
     medication_4.id = medication_3.get('id', None)
     medication_4.text = medication_3.get('text', None)
     medication_4.contained = medication_3.get('contained', None)
+    medication_4.extension = medication_3.get('extension', None)
+    medication_4.modifierExtension = medication_3.get('modifierExtension', None)
     medication_4.code = medication_3.get('code', None)
     medication_4.status = medication_3.get('status', None)
     medication_4.manufacturer = medication_3.get('manufacturer', None)

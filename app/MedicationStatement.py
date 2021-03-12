@@ -22,6 +22,8 @@ def transform_medication_statement_3to4(json_data):
     medication_statement_4.id = medication_statement_3.get('id', None)
     medication_statement_4.text = medication_statement_3.get('text', None)
     medication_statement_4.contained = medication_statement_3.get('contained', None)
+    medication_statement_4.extension = medication_statement_3.get('extension', None)
+    medication_statement_4.modifierExtension = medication_statement_3.get('modifierExtension', None)
     medication_statement_4.identifier = medication_statement_3.get('identifier', None)
     medication_statement_4.basedOn = medication_statement_3.get('basedOn', None)
     medication_statement_4.partOf = medication_statement_3.get('partOf', None)
