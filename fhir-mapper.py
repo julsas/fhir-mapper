@@ -1,5 +1,6 @@
 from app.MedicationStatement import transform_medication_statement_3to4
 from app.CapabilityStatement import create_capabiliy_statement
+from app.ArbitraryMapper import transform_arbitrary_resource
 #import json
 from flask.json import JSONEncoder
 from pydantic.json import pydantic_encoder
@@ -47,9 +48,21 @@ class MedicationStatement(Resource):
         )
         return response
 
+class ArbitraryEndpoint(Resource):
+    def post(self):
+        resource = request.get_json()
+        transformed_resource = transform_arbitrary_resource(resource)
+        response = app.response_class(
+            response=transformed_resource,
+            status=200,
+            mimetype='application/fhir+json'
+        )
+        return response
+
 api.add_resource(CapabilityStatement, "/metadata")
 api.add_resource(Medication, "/Medication")
 api.add_resource(MedicationStatement, "/MedicationStatement")
+api.add_resource(ArbitraryEndpoint, "/ArbitraryResource")
 
 if __name__ == "__main__":
     app.run(debug=True)
