@@ -7,13 +7,17 @@ def transform_medication_3to4(json_data):
     medication_3 = medication_3.dict()
     medication_4 = MedicationR4.construct()
     medication_4.id = medication_3.get('id', None)
-    meta_profile = medication_3.get('meta', None).get('profile', None)
-    if meta_profile == None:
+    meta = medication_3.get('meta', None)
+    if meta == None:
         pass
     else:
-        meta = Meta.construct()
-        meta.source = meta_profile[0]
-        medication_4.meta = meta
+        meta_profile = meta.get('profile', None)
+        if meta_profile == None:
+            pass
+        else:
+            meta = Meta.construct()
+            meta.source = meta_profile[0]
+            medication_4.meta = meta
     medication_4.text = medication_3.get('text', None)
     medication_4.contained = medication_3.get('contained', None)
     medication_4.extension = medication_3.get('extension', None)

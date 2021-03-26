@@ -21,13 +21,17 @@ def transform_medication_statement_3to4(json_data):
     medication_statement_3 = medication_statement_3.dict()
     medication_statement_4 = MedicationStatementR4.parse_obj(medication_statement)
     medication_statement_4.id = medication_statement_3.get('id', None)
-    meta_profile = medication_statement_3.get('meta', None).get('profile', None)
-    if meta_profile == None:
+    meta = medication_statement_3.get('meta', None)
+    if meta == None:
         pass
     else:
-        meta = Meta.construct()
-        meta.source = meta_profile[0]
-        medication_statement_4.meta = meta
+        meta_profile = meta.get('profile', None)
+        if meta_profile == None:
+            pass
+        else:
+            meta = Meta.construct()
+            meta.source = meta_profile[0]
+            medication_statement_4.meta = meta
     medication_statement_4.text = medication_statement_3.get('text', None)
     medication_statement_4.contained = medication_statement_3.get('contained', None)
     medication_statement_4.extension = medication_statement_3.get('extension', None)
