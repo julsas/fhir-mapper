@@ -65,7 +65,7 @@ def transform_observation_3to4(json_data):
     else:
         note = Annotation.construct()
         note.text = comment
-        observation_4.note = note
+        observation_4.note = [note]
     observation_4.bodySite = observation_3.get('bodySite', None)
     observation_4.method = observation_3.get('method', None)
     observation_4.specimen = observation_3.get('specimen', None)
