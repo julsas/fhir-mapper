@@ -58,7 +58,11 @@ def transform_observation_3to4(json_data):
     observation_4.valueDateTime = observation_3.get('valueDateTime', None)
     observation_4.valuePeriod = observation_3.get('valuePeriod', None)
     observation_4.dataAbsentReason = observation_3.get('dataAbsentReason', None)
-    observation_4.interpretation = observation_3.get('interpretation', None)
+    interpretation = observation_3.get('interpretation', None)
+    if interpretation == None:
+        pass
+    else:
+        observation_4.interpretation = [interpretation]
     comment = observation_3.get('comment', None)
     if comment == None:
         pass
