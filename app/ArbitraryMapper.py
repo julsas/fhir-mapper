@@ -1,3 +1,4 @@
+from app.Device import transform_device_3to4
 from app.AllergyIntolerance import transform_allergy_intolerance_3to4
 from app.Condition import transform_condition_3to4
 from app.Patient import transform_patient_3to4
@@ -29,6 +30,7 @@ def transform_arbitrary_resource(json_data):
     elif json_data['resourceType'] == 'AllergyIntolerance':
         transformed_resource = transform_allergy_intolerance_3to4(json_data)
         return transformed_resource.json()
-        
 
-
+    elif json_data['resourceType'] == 'Device':
+        transformed_resource = transform_device_3to4(json_data)
+        return transformed_resource.json()

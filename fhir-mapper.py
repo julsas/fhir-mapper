@@ -1,3 +1,4 @@
+from app.Device import transform_device_3to4
 from app.AllergyIntolerance import transform_allergy_intolerance_3to4
 from app.MedicationStatement import transform_medication_statement_3to4
 from app.CapabilityStatement import create_capabiliy_statement
@@ -95,6 +96,17 @@ class AllergyIntolerance(Resource):
         )
         return response
 
+class Device(Resource):
+    def post(self):
+        resource = request.get_json()
+        transformed_resource = transform_device_3to4(resource)
+        response = app.response_class(
+            response=transformed_resource.json(),
+            status=200,
+            mimetype='application/fhir+json'
+        )
+        return response
+
 class ArbitraryEndpoint(Resource):
     def post(self):
         resource = request.get_json()
@@ -113,6 +125,7 @@ api.add_resource(MedicationStatement, "/MedicationStatement")
 api.add_resource(Observation, "/Observation")
 api.add_resource(Condition, "/Condition")
 api.add_resource(AllergyIntolerance, "/AllergyIntolerance")
+api.add_resource(Device, "/Device")
 api.add_resource(ArbitraryEndpoint, "/ArbitraryResource")
 
 if __name__ == "__main__":
