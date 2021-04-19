@@ -4,6 +4,7 @@ from fhir.resources.meta import (Meta)
 from fhir.resources.identifier import (Identifier)
 from fhir.resources.codeableconcept import (CodeableConcept)
 from fhir.resources.coding import (Coding)
+import re
 
 imaging_study_example = {
   "resourceType": "ImagingStudy",
@@ -101,7 +102,7 @@ def transform_imaging_study_3to4(json_data):
         series_4 = []
         for series in series_3:
             dicom_series = ImagingStudySeries.parse_obj(series_example)
-            dicom_series.uid = series.get('uid')
+            dicom_series.uid = re.sub('^urn:oid:', '', series.get('uid'))
             dicom_series.number = series.get('number', None)
             dicom_series.modality = series.get('modality')
             dicom_series.description = series.get('description', None)
@@ -133,7 +134,7 @@ def transform_imaging_study_3to4(json_data):
                 series_instances_4 = []
                 for series_instance in series_instance_3:
                     series_instance_4 = ImagingStudySeriesInstance.parse_obj(instance_example)
-                    series_instance_4.uid = series_instance.get('uid', None)
+                    series_instance_4.uid = re.sub('^urn:oid:', '', series_instance.get('uid', None))
                     sop_class = Coding.construct()
                     sop_class.system = 'urn:ietf:rfc:3986'
                     sop_class.code = series_instance.get('sopClass')
