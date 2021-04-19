@@ -1,3 +1,4 @@
+from app.DiagnosticReport import transform_diagnostic_report_3to4
 from app.DeviceUseStatement import transform_device_use_statement_3to4
 from app.Device import transform_device_3to4
 from app.AllergyIntolerance import transform_allergy_intolerance_3to4
@@ -38,4 +39,8 @@ def transform_arbitrary_resource(json_data):
 
     elif json_data['resourceType'] == 'DeviceUseStatement':
         transformed_resource = transform_device_use_statement_3to4(json_data)
+        return transformed_resource.json()
+
+    elif json_data['resourceType'] == 'DiagnosticReport':
+        transformed_resource = transform_diagnostic_report_3to4(json_data)
         return transformed_resource.json()
