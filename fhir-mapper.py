@@ -9,19 +9,19 @@ from app.Observation import transform_observation_3to4
 from app.Condition import transform_condition_3to4
 from app.Patient import transform_patient_3to4
 from app.ArbitraryMapper import transform_arbitrary_resource
-from flask.json import JSONEncoder
-from pydantic.json import pydantic_encoder
 from app.Medication import transform_medication_3to4
-from flask import Flask, jsonify, request
-from flask_restful import Api, Resource, reqparse
-
-#class CustomJSONEncoder(JSONEncoder):
-#    def default(self, obj):
-#        return json.dumps(obj, indent=4, default=pydantic_encoder)
+from flask import Flask, request
+from flask_restful import Api, Resource
+from logging import FileHandler, WARNING
 
 app = Flask(__name__)
-#app.json_encoder = CustomJSONEncoder
+
 api = Api(app)
+
+file_handler = FileHandler('log.txt')
+file_handler.setLevel(WARNING)
+
+app.logger.addHandler(file_handler)
 
 class CapabilityStatement(Resource):
     def get(self):
@@ -168,6 +168,7 @@ api.add_resource(ImagingStudy, "/ImagingStudy")
 api.add_resource(ArbitraryEndpoint, "/ArbitraryResource")
 
 if __name__ == "__main__":
+    #app.run()
     app.run(debug=True)
 
     
