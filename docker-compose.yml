@@ -1,0 +1,10 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  fhir-mapper:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - fhir-mapper-log:/fhir-mapper
+volumes:
+  fhir-mapper-log: {}
