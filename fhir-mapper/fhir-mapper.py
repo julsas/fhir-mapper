@@ -9,6 +9,7 @@ from app.MedicationStatement import transform_medication_statement_3to4
 from app.CapabilityStatement import create_capabiliy_statement
 from app.Observation import transform_observation_3to4
 from app.Condition import transform_condition_3to4
+from app.Organization import transform_organization_3to4
 from app.Patient import transform_patient_3to4
 from app.ArbitraryMapper import transform_arbitrary_resource
 from app.Medication import transform_medication_3to4
@@ -167,6 +168,17 @@ class Media(Resource):
         )
         return response
 
+class Organization(Resource):
+    def post(self):
+        resource = request.get_json()
+        transformed_resource = transform_organization_3to4(resource)
+        response = app.response_class(
+            response=transformed_resource.json(),
+            status=200,
+            mimetype='application/fhir+json'
+        )
+        return response
+
 class ArbitraryEndpoint(Resource):
     def post(self):
         resource = request.get_json()
@@ -191,6 +203,7 @@ api.add_resource(DiagnosticReport, "/DiagnosticReport")
 api.add_resource(ImagingStudy, "/ImagingStudy")
 api.add_resource(Immunization, "/Immunization")
 api.add_resource(Media, "/Media")
+api.add_resource(Organization, "/Organization")
 api.add_resource(ArbitraryEndpoint, "/ArbitraryResource")
 
 if __name__ == "__main__":
