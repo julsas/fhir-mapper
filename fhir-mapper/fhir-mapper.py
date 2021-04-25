@@ -17,6 +17,8 @@ from flask import Flask, request
 from flask_restful import Api, Resource
 from logging import FileHandler, WARNING
 
+from app.PractitionerRole import transform_practitioner_role_3to4
+
 app = Flask(__name__)
 
 api = Api(app)
@@ -179,6 +181,17 @@ class Organization(Resource):
         )
         return response
 
+class PractitionerRole(Resource):
+    def post(self):
+        resource = request.get_json()
+        transformed_resource = transform_practitioner_role_3to4(resource)
+        response = app.response_class(
+            response=transformed_resource.json(),
+            status=200,
+            mimetype='application/fhir+json'
+        )
+        return response
+
 class ArbitraryEndpoint(Resource):
     def post(self):
         resource = request.get_json()
@@ -204,6 +217,7 @@ api.add_resource(ImagingStudy, "/ImagingStudy")
 api.add_resource(Immunization, "/Immunization")
 api.add_resource(Media, "/Media")
 api.add_resource(Organization, "/Organization")
+api.add_resource(PractitionerRole, "/PractitionerRole")
 api.add_resource(ArbitraryEndpoint, "/ArbitraryResource")
 
 if __name__ == "__main__":
