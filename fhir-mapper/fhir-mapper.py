@@ -4,6 +4,7 @@ from app.DiagnosticReport import transform_diagnostic_report_3to4
 from app.DeviceUseStatement import transform_device_use_statement_3to4
 from app.Device import transform_device_3to4
 from app.AllergyIntolerance import transform_allergy_intolerance_3to4
+from app.Media import transform_media_3to4
 from app.MedicationStatement import transform_medication_statement_3to4
 from app.CapabilityStatement import create_capabiliy_statement
 from app.Observation import transform_observation_3to4
@@ -155,6 +156,17 @@ class Immunization(Resource):
         )
         return response
 
+class Media(Resource):
+    def post(self):
+        resource = request.get_json()
+        transformed_resource = transform_media_3to4(resource)
+        response = app.response_class(
+            response=transformed_resource.json(),
+            status=200,
+            mimetype='application/fhir+json'
+        )
+        return response
+
 class ArbitraryEndpoint(Resource):
     def post(self):
         resource = request.get_json()
@@ -178,10 +190,11 @@ api.add_resource(DeviceUseStatement, "/DeviceUseStatement")
 api.add_resource(DiagnosticReport, "/DiagnosticReport")
 api.add_resource(ImagingStudy, "/ImagingStudy")
 api.add_resource(Immunization, "/Immunization")
+api.add_resource(Media, "/Media")
 api.add_resource(ArbitraryEndpoint, "/ArbitraryResource")
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
-    #app.run(debug=True)
+    #app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
 
     
