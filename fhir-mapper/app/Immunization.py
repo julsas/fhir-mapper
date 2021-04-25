@@ -102,6 +102,7 @@ def transform_immunization_3to4(json_data):
                 reason_codes.append(reason_not_given)
         immunization_4.reasonCode = reason_codes
     immunization_4.reaction = immunization_3.get('reaction', None)
+    '''
     vaccination_protocol = immunization_3.get('vaccinationProtocol', None)
     if vaccination_protocol == None:
         pass
@@ -126,4 +127,5 @@ def transform_immunization_3to4(json_data):
             protocol_applied.seriesDosesPositiveInt = protocol.get('seriesDoses', None)
             protocols_applied.append(protocol_applied)
         immunization_4.protocolApplied = protocols_applied
+        '''
     return immunization_4
