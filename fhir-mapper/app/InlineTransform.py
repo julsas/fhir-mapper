@@ -9,6 +9,7 @@ from app.Device import transform_device_3to4
 from app.AllergyIntolerance import transform_allergy_intolerance_3to4
 from app.Condition import transform_condition_3to4
 from app.Media import transform_media_3to4
+from app.OperationOutcome import resource_type_not_supported
 from app.Organization import transform_organization_3to4
 from app.Patient import transform_patient_3to4
 from app.Observation import transform_observation_3to4
@@ -95,3 +96,7 @@ def transform_inline_resource(json_data):
     elif json_data['resourceType'] == 'Bundle':
         transformed_resource = app.Bundle.transform_bundle_3to4(json_data)
         return transformed_resource.json()
+
+    else:
+        operation_outcome = resource_type_not_supported()
+        return operation_outcome.json()

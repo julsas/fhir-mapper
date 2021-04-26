@@ -1,7 +1,13 @@
 from fhir.resources.STU3.bundle import (Bundle as BundleSTU3)
 from fhir.resources.bundle import (Bundle as BundleR4, BundleEntry)
 from fhir.resources.meta import Meta
+from fhir.resources.extension import (Extension)
+from fhir.resources.fhirprimitiveextension import (FHIRPrimitiveExtension)
 from app.InlineTransform import transform_inline_resource
+import datetime
+
+dateTime = datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()
+dateTime = str(dateTime)
 
 bundle_example = {
   "resourceType": "Bundle",
@@ -25,7 +31,17 @@ def transform_bundle_3to4(json_data):
             meta.source = meta_profile[0]
             bundle_4.meta = meta
     bundle_4.identifier = bundle_3.get('identifier', None)
-    bundle_4.type = bundle_3.get('type', None)
+    bundle_type = bundle_3.get('type', None)
+    bundle_4.type = bundle_type
+    if bundle_type == 'document':
+        bundle_4.timestamp = dateTime
+    else:
+        data_absent_reason = Extension.construct()
+        data_absent_reason.url = 'http://hl7.org/fhir/StructureDefinition/data-absent-reason'
+        data_absent_reason.valueCode = 'unknown'
+        data_absent_reason_ex = FHIRPrimitiveExtension.construct()
+        data_absent_reason_ex.extension = [data_absent_reason]
+        bundle_4.timestamp__ext = data_absent_reason_ex
     bundle_4.total = bundle_3.get('total', None)
     bundle_4.link = bundle_3.get('link', None)
     entries_3 = bundle_3.get('entry', None)
