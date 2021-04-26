@@ -1,3 +1,4 @@
+from app.Composition import transform_composition_3to4
 from app.Immunization import transform_immunization_3to4
 from app.ImagingStudy import transform_imaging_study_3to4
 from app.DiagnosticReport import transform_diagnostic_report_3to4
@@ -192,6 +193,17 @@ class PractitionerRole(Resource):
         )
         return response
 
+class Composition(Resource):
+    def post(self):
+        resource = request.get_json()
+        transformed_resource = transform_composition_3to4(resource)
+        response = app.response_class(
+            response=transformed_resource.json(),
+            status=200,
+            mimetype='application/fhir+json'
+        )
+        return response
+
 class ArbitraryEndpoint(Resource):
     def post(self):
         resource = request.get_json()
@@ -218,6 +230,7 @@ api.add_resource(Immunization, "/Immunization")
 api.add_resource(Media, "/Media")
 api.add_resource(Organization, "/Organization")
 api.add_resource(PractitionerRole, "/PractitionerRole")
+api.add_resource(Composition, "/Composition")
 api.add_resource(ArbitraryEndpoint, "/ArbitraryResource")
 
 if __name__ == "__main__":
