@@ -20,6 +20,7 @@ from logging import FileHandler, WARNING
 from app.Practitioner import transform_practitioner_3to4
 
 from app.PractitionerRole import transform_practitioner_role_3to4
+from app.Procedure import transform_procedure_3to4
 
 app = Flask(__name__)
 
@@ -216,6 +217,17 @@ class Practitioner(Resource):
         )
         return response
 
+class Procedure(Resource):
+    def post(self):
+        resource = request.get_json()
+        transformed_resource = transform_procedure_3to4(resource)
+        response = app.response_class(
+            response=transformed_resource.json(),
+            status=200,
+            mimetype='application/fhir+json'
+        )
+        return response
+
 class ArbitraryEndpoint(Resource):
     def post(self):
         resource = request.get_json()
@@ -244,6 +256,7 @@ api.add_resource(Organization, "/Organization")
 api.add_resource(PractitionerRole, "/PractitionerRole")
 api.add_resource(Composition, "/Composition")
 api.add_resource(Practitioner, "/Practitioner")
+api.add_resource(Procedure, "/Procedure")
 api.add_resource(ArbitraryEndpoint, "/ArbitraryResource")
 
 if __name__ == "__main__":
