@@ -21,6 +21,7 @@ from app.Practitioner import transform_practitioner_3to4
 
 from app.PractitionerRole import transform_practitioner_role_3to4
 from app.Procedure import transform_procedure_3to4
+from app.Specimen import transform_specimen_3to4
 
 app = Flask(__name__)
 
@@ -221,6 +222,17 @@ class Procedure(Resource):
     def post(self):
         resource = request.get_json()
         transformed_resource = transform_procedure_3to4(resource)
+        response = app.response_class(
+            response=transformed_resource.json(),
+            status=200,
+            mimetype='application/fhir+json'
+        )
+        return response
+
+class Specimen(Resource):
+    def post(self):
+        resource = request.get_json()
+        transformed_resource = transform_specimen_3to4(resource)
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,

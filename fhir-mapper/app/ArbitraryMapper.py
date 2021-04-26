@@ -15,6 +15,7 @@ from app.MedicationStatement import transform_medication_statement_3to4
 from app.Practitioner import transform_practitioner_3to4
 from app.PractitionerRole import transform_practitioner_role_3to4
 from app.Procedure import transform_procedure_3to4
+from app.Specimen import transform_specimen_3to4
 
 def transform_arbitrary_resource(json_data):
     if json_data['resourceType'] == 'Medication':
@@ -83,5 +84,9 @@ def transform_arbitrary_resource(json_data):
 
     elif json_data['resourceType'] == 'Procedure':
         transformed_resource = transform_procedure_3to4(json_data)
+        return transformed_resource.json()
+
+    elif json_data['resourceType'] == 'Specimen':
+        transformed_resource = transform_specimen_3to4(json_data)
         return transformed_resource.json()
         
