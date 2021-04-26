@@ -1,4 +1,5 @@
-from app.Bundle import transform_bundle_3to4
+from fhir.resources.bundle import Bundle
+import app.Bundle
 from app.Composition import transform_composition_3to4
 from app.Immunization import transform_immunization_3to4
 from app.ImagingStudy import transform_imaging_study_3to4
@@ -18,7 +19,7 @@ from app.PractitionerRole import transform_practitioner_role_3to4
 from app.Procedure import transform_procedure_3to4
 from app.Specimen import transform_specimen_3to4
 
-def transform_arbitrary_resource(json_data):
+def transform_inline_resource(json_data):
     if json_data['resourceType'] == 'Medication':
         transformed_resource = transform_medication_3to4(json_data)
         return transformed_resource.json()
@@ -92,6 +93,5 @@ def transform_arbitrary_resource(json_data):
         return transformed_resource.json()
 
     elif json_data['resourceType'] == 'Bundle':
-        transformed_resource = transform_bundle_3to4(json_data)
+        transformed_resource = app.Bundle.transform_bundle_3to4(json_data)
         return transformed_resource.json()
-        

@@ -1,3 +1,4 @@
+from app.Bundle import transform_bundle_3to4
 from app.Composition import transform_composition_3to4
 from app.Immunization import transform_immunization_3to4
 from app.ImagingStudy import transform_imaging_study_3to4
@@ -14,14 +15,13 @@ from app.Organization import transform_organization_3to4
 from app.Patient import transform_patient_3to4
 from app.ArbitraryMapper import transform_arbitrary_resource
 from app.Medication import transform_medication_3to4
-from flask import Flask, request
-from flask_restful import Api, Resource
-from logging import FileHandler, WARNING
 from app.Practitioner import transform_practitioner_3to4
-
 from app.PractitionerRole import transform_practitioner_role_3to4
 from app.Procedure import transform_procedure_3to4
 from app.Specimen import transform_specimen_3to4
+from flask import Flask, request
+from flask_restful import Api, Resource
+from logging import FileHandler, WARNING
 
 app = Flask(__name__)
 
@@ -240,6 +240,17 @@ class Specimen(Resource):
         )
         return response
 
+class Bundle(Resource):
+    def post(self):
+        resource = request.get_json()
+        transformed_resource = transform_bundle_3to4(resource)
+        response = app.response_class(
+            response=transformed_resource.json(),
+            status=200,
+            mimetype='application/fhir+json'
+        )
+        return response
+
 class ArbitraryEndpoint(Resource):
     def post(self):
         resource = request.get_json()
@@ -269,6 +280,7 @@ api.add_resource(PractitionerRole, "/PractitionerRole")
 api.add_resource(Composition, "/Composition")
 api.add_resource(Practitioner, "/Practitioner")
 api.add_resource(Procedure, "/Procedure")
+api.add_resource(Bundle, "/Bundle")
 api.add_resource(ArbitraryEndpoint, "/ArbitraryResource")
 
 if __name__ == "__main__":
