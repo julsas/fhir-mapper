@@ -1,6 +1,7 @@
 from fhir.resources.STU3.deviceusestatement import (DeviceUseStatement as DeviceUseStatementSTU3)
 from fhir.resources.deviceusestatement import (DeviceUseStatement as DeviceUseStatementR4)
 from fhir.resources.meta import (Meta)
+import app.InlineTransform
 
 device_use_statement = {
   "resourceType": "DeviceUseStatement",
@@ -30,7 +31,15 @@ def transform_device_use_statement_3to4(json_data):
             meta.source = meta_profile[0]
             device_use_statement_4.meta = meta
     device_use_statement_4.text = device_use_statement_3.get('text', None)
-    device_use_statement_4.contained = device_use_statement_3.get('contained', None)
+    contained_resources_3 = device_use_statement_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        device_use_statement_4.contained = contained_resources_4
     device_use_statement_4.extension = device_use_statement_3.get('extension', None)
     device_use_statement_4.modifierExtension = device_use_statement_3.get('modifierExtension', None)
     device_use_statement_4.identifier = device_use_statement_3.get('identifier', None)

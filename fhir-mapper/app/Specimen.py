@@ -1,6 +1,7 @@
 from fhir.resources.STU3.specimen import (Specimen as SpecimenSTU3)
 from fhir.resources.specimen import (Specimen as SpecimenR4)
 from fhir.resources.meta import Meta
+import app.InlineTransform
 
 def transform_specimen_3to4(json_data):
     specimen_3 = SpecimenSTU3.parse_obj(json_data)
@@ -19,7 +20,15 @@ def transform_specimen_3to4(json_data):
             meta.source = meta_profile[0]
             specimen_4.meta = meta
     specimen_4.text = specimen_3.get('text', None)
-    specimen_4.contained = specimen_3.get('contained', None)
+    contained_resources_3 = specimen_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        specimen_4.contained = contained_resources_4
     specimen_4.extension = specimen_3.get('extension', None)
     specimen_4.modifierExtension = specimen_3.get('modifierExtension', None)
     specimen_4.identifier = specimen_3.get('identifier', None)

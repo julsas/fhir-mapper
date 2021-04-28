@@ -3,6 +3,7 @@ from fhir.resources.immunization import (Immunization as ImmunizationR4, Immuniz
 from fhir.resources.meta import (Meta)
 from fhir.resources.extension import (Extension)
 from fhir.resources.fhirprimitiveextension import (FHIRPrimitiveExtension)
+import app.InlineTransform
 
 immunization_example = {
   "resourceType": "Immunization",
@@ -48,7 +49,15 @@ def transform_immunization_3to4(json_data):
             meta.source = meta_profile[0]
             immunization_4.meta = meta
     immunization_4.text = immunization_3.get('text', None)
-    immunization_4.contained = immunization_3.get('contained', None)
+    contained_resources_3 = immunization_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        immunization_4.contained = contained_resources_4
     immunization_4.extension = immunization_3.get('extension', None)
     immunization_4.modifierExtension = immunization_3.get('modifierExtension', None)
     immunization_4.identifier = immunization_3.get('identifier', None)

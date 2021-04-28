@@ -1,6 +1,7 @@
 from fhir.resources.STU3.composition import (Composition as CompositionSTU3)
 from fhir.resources.composition import (Composition as CompositionR4, CompositionAttester)
 from fhir.resources.meta import Meta
+import app.InlineTransform
 
 composition_example = {
   "resourceType": "Composition",
@@ -41,7 +42,15 @@ def transform_composition_3to4(json_data):
             meta.source = meta_profile[0]
             composition_4.meta = meta
     composition_4.text = composition_3.get('text', None)
-    composition_4.contained = composition_3.get('contained', None)
+    contained_resources_3 = composition_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        composition_4.contained = contained_resources_4
     composition_4.extension = composition_3.get('extension', None)
     composition_4.modifierExtension = composition_3.get('modifierExtension', None)
     composition_4.identifier = composition_3.get('identifier', None)

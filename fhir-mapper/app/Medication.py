@@ -1,6 +1,7 @@
 from fhir.resources.STU3.medication import (Medication as MedicationSTU3)
 from fhir.resources.medication import (Medication as MedicationR4, MedicationIngredient as MedicationIngredientR4, MedicationBatch as MedicationBatchR4)
 from fhir.resources.meta import Meta
+import app.InlineTransform
 
 def transform_medication_3to4(json_data):
     medication_3 = MedicationSTU3.parse_obj(json_data)
@@ -19,7 +20,15 @@ def transform_medication_3to4(json_data):
             meta.source = meta_profile[0]
             medication_4.meta = meta
     medication_4.text = medication_3.get('text', None)
-    medication_4.contained = medication_3.get('contained', None)
+    contained_resources_3 = medication_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        medication_4.contained = contained_resources_4
     medication_4.extension = medication_3.get('extension', None)
     medication_4.modifierExtension = medication_3.get('modifierExtension', None)
     medication_4.code = medication_3.get('code', None)

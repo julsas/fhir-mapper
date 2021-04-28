@@ -3,6 +3,7 @@ from fhir.resources.allergyintolerance import (AllergyIntolerance as AllergyInto
 from fhir.resources.codeableconcept import (CodeableConcept)
 from fhir.resources.coding import (Coding)
 from fhir.resources.meta import Meta
+import app.InlineTransform
 
 def transform_allergy_intolerance_3to4(json_data):
     allergy_intolerance_3 = AllergyIntoleranceSTU3.parse_obj(json_data)
@@ -21,7 +22,15 @@ def transform_allergy_intolerance_3to4(json_data):
             meta.source = meta_profile[0]
             allergy_intolerance_4.meta = meta
     allergy_intolerance_4.text = allergy_intolerance_3.get('text', None)
-    allergy_intolerance_4.contained = allergy_intolerance_3.get('contained', None)
+    contained_resources_3 = allergy_intolerance_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        allergy_intolerance_4.contained = contained_resources_4
     allergy_intolerance_4.extension = allergy_intolerance_3.get('extension', None)
     allergy_intolerance_4.modifierExtension = allergy_intolerance_3.get('modifierExtension', None)
     allergy_intolerance_4.identifier = allergy_intolerance_3.get('identifier', None)

@@ -4,6 +4,7 @@ from fhir.resources.medicationstatement import (MedicationStatement as Medicatio
 from fhir.resources.dosage import (Dosage, DosageDoseAndRate)
 from fhir.resources.timing import (Timing, TimingRepeat)
 from fhir.resources.meta import Meta
+import app.InlineTransform
 
 medication_statement = {
     "resourceType": "MedicationStatement",
@@ -33,7 +34,15 @@ def transform_medication_statement_3to4(json_data):
             meta.source = meta_profile[0]
             medication_statement_4.meta = meta
     medication_statement_4.text = medication_statement_3.get('text', None)
-    medication_statement_4.contained = medication_statement_3.get('contained', None)
+    contained_resources_3 = medication_statement_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        medication_statement_4.contained = contained_resources_4
     medication_statement_4.extension = medication_statement_3.get('extension', None)
     medication_statement_4.modifierExtension = medication_statement_3.get('modifierExtension', None)
     medication_statement_4.identifier = medication_statement_3.get('identifier', None)

@@ -1,6 +1,7 @@
 from fhir.resources.STU3.device import (Device as DeviceSTU3)
 from fhir.resources.device import (Device as DeviceR4, DeviceUdiCarrier, DeviceDeviceName, DeviceVersion)
 from fhir.resources.meta import (Meta)
+import app.InlineTransform
 
 device_name_4 = [
         {
@@ -26,7 +27,15 @@ def transform_device_3to4(json_data):
             meta.source = meta_profile[0]
             device_4.meta = meta
     device_4.text = device_3.get('text', None)
-    device_4.contained = device_3.get('contained', None)
+    contained_resources_3 = device_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        device_4.contained = contained_resources_4
     device_4.extension = device_3.get('extension', None)
     device_4.modifierExtension = device_3.get('modifierExtension', None)
     device_4.identifier = device_3.get('identifier', None)

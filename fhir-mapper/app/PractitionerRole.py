@@ -1,6 +1,7 @@
 from fhir.resources.STU3.practitionerrole import (PractitionerRole as PractitionerRoleSTU3)
 from fhir.resources.practitionerrole import (PractitionerRole as PractitionerRoleR4)
 from fhir.resources.meta import Meta
+import app.InlineTransform
 
 def transform_practitioner_role_3to4(json_data):
     practitioner_role_3 = PractitionerRoleSTU3.parse_obj(json_data)
@@ -19,7 +20,15 @@ def transform_practitioner_role_3to4(json_data):
             meta.source = meta_profile[0]
             practitioner_role_4.meta = meta
     practitioner_role_4.text = practitioner_role_3.get('text', None)
-    practitioner_role_4.contained = practitioner_role_3.get('contained', None)
+    contained_resources_3 = practitioner_role_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        practitioner_role_4.contained = contained_resources_4
     practitioner_role_4.extension = practitioner_role_3.get('extension', None)
     practitioner_role_4.modifierExtension = practitioner_role_3.get('modifierExtension', None)
     practitioner_role_4.identifier = practitioner_role_3.get('identifier', None)

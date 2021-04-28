@@ -1,6 +1,7 @@
 from fhir.resources.STU3.organization import (Organization as OrganizationSTU3)
 from fhir.resources.organization import (Organization as OrganizationR4)
 from fhir.resources.meta import Meta
+import app.InlineTransform
 
 def transform_organization_3to4(json_data):
     organization_3 = OrganizationSTU3.parse_obj(json_data)
@@ -19,7 +20,15 @@ def transform_organization_3to4(json_data):
             meta.source = meta_profile[0]
             organization_4.meta = meta
     organization_4.text = organization_3.get('text', None)
-    organization_4.contained = organization_3.get('contained', None)
+    contained_resources_3 = organization_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        organization_4.contained = contained_resources_4
     organization_4.extension = organization_3.get('extension', None)
     organization_4.modifierExtension = organization_3.get('modifierExtension', None)
     organization_4.identifier = organization_3.get('identifier', None)

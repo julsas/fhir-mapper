@@ -1,6 +1,7 @@
 from fhir.resources.STU3.patient import (Patient as PatientSTU3)
 from fhir.resources.patient import (Patient as PatientR4)
 from fhir.resources.meta import Meta
+import app.InlineTransform
 
 def transform_patient_3to4(json_data):
     patient_3 = PatientSTU3.parse_obj(json_data)
@@ -19,7 +20,15 @@ def transform_patient_3to4(json_data):
             meta.source = meta_profile[0]
             patient_4.meta = meta
     patient_4.text = patient_3.get('text', None)
-    patient_4.contained = patient_3.get('contained', None)
+    contained_resources_3 = patient_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        patient_4.contained = contained_resources_4
     patient_4.extension = patient_3.get('extension', None)
     patient_4.modifierExtension = patient_3.get('modifierExtension', None)
     patient_4.identifier = patient_3.get('identifier', None)

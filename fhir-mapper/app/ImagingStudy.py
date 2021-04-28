@@ -4,6 +4,7 @@ from fhir.resources.meta import (Meta)
 from fhir.resources.identifier import (Identifier)
 from fhir.resources.codeableconcept import (CodeableConcept)
 from fhir.resources.coding import (Coding)
+import app.InlineTransform
 import re
 
 imaging_study_example = {
@@ -47,7 +48,15 @@ def transform_imaging_study_3to4(json_data):
             meta.source = meta_profile[0]
             imaging_study_4.meta = meta
     imaging_study_4.text = imaging_study_3.get('text', None)
-    imaging_study_4.contained = imaging_study_3.get('contained', None)
+    contained_resources_3 = imaging_study_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        imaging_study_4.contained = contained_resources_4
     imaging_study_4.extension = imaging_study_3.get('extension', None)
     imaging_study_4.modifierExtension = imaging_study_3.get('modifierExtension', None)
     identifier_4 = []

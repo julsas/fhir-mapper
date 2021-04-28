@@ -1,6 +1,7 @@
 from fhir.resources.STU3.diagnosticreport import (DiagnosticReport as DiagnosticReportSTU3)
 from fhir.resources.diagnosticreport import (DiagnosticReport as DiagnosticReportR4)
 from fhir.resources.meta import (Meta)
+import app.InlineTransform
 
 diagnostic_report = {
   "resourceType": "DiagnosticReport",
@@ -33,7 +34,15 @@ def transform_diagnostic_report_3to4(json_data):
             meta.source = meta_profile[0]
             diagnostic_report_4.meta = meta
     diagnostic_report_4.text = diagnostic_report_3.get('text', None)
-    diagnostic_report_4.contained = diagnostic_report_3.get('contained', None)
+    contained_resources_3 = diagnostic_report_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        diagnostic_report_4.contained = contained_resources_4
     diagnostic_report_4.extension = diagnostic_report_3.get('extension', None)
     diagnostic_report_4.modifierExtension = diagnostic_report_3.get('modifierExtension', None)
     diagnostic_report_4.identifier = diagnostic_report_3.get('identifier', None)

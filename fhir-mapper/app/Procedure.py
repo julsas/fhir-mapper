@@ -1,6 +1,7 @@
 from fhir.resources.STU3.procedure import (Procedure as ProcedureSTU3)
 from fhir.resources.procedure import (Procedure as ProcedureR4, ProcedurePerformer)
 from fhir.resources.meta import Meta
+import app.InlineTransform
 
 procedure_example = {
   "resourceType": "Procedure",
@@ -27,7 +28,15 @@ def transform_procedure_3to4(json_data):
             meta.source = meta_profile[0]
             procedure_4.meta = meta
     procedure_4.text = procedure_3.get('text', None)
-    procedure_4.contained = procedure_3.get('contained', None)
+    contained_resources_3 = procedure_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        procedure_4.contained = contained_resources_4
     procedure_4.extension = procedure_3.get('extension', None)
     procedure_4.modifierExtension = procedure_3.get('modifierExtension', None)
     procedure_4.identifier = procedure_3.get('identifier', None)

@@ -3,6 +3,7 @@ from fhir.resources.condition import (Condition as ConditionR4)
 from fhir.resources.codeableconcept import (CodeableConcept)
 from fhir.resources.coding import (Coding)
 from fhir.resources.meta import Meta
+import app.InlineTransform
 
 def transform_condition_3to4(json_data):
     condition_3 = ConditionSTU3.parse_obj(json_data)
@@ -21,7 +22,15 @@ def transform_condition_3to4(json_data):
             meta.source = meta_profile[0]
             condition_4.meta = meta
     condition_4.text = condition_3.get('text', None)
-    condition_4.contained = condition_3.get('contained', None)
+    contained_resources_3 = condition_3.get('contained', None)
+    if contained_resources_3 == None:
+        pass
+    else:
+        contained_resources_4 = []
+        for contained_resource_3 in contained_resources_3:
+            contained_resource_4 = app.InlineTransform.transform_inline_resource(contained_resource_3)
+            contained_resources_4.append(contained_resource_4)
+        condition_4.contained = contained_resources_4
     condition_4.extension = condition_3.get('extension', None)
     condition_4.modifierExtension = condition_3.get('modifierExtension', None)
     condition_4.identifier = condition_3.get('identifier', None)
