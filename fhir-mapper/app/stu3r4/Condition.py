@@ -3,7 +3,7 @@ from fhir.resources.condition import (Condition as ConditionR4)
 from fhir.resources.codeableconcept import (CodeableConcept)
 from fhir.resources.coding import (Coding)
 from fhir.resources.meta import Meta
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 def transform_condition_3to4(json_data):
     condition_3 = ConditionSTU3.parse_obj(json_data)

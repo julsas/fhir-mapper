@@ -3,7 +3,7 @@ from fhir.resources.allergyintolerance import (AllergyIntolerance as AllergyInto
 from fhir.resources.codeableconcept import (CodeableConcept)
 from fhir.resources.coding import (Coding)
 from fhir.resources.meta import Meta
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 def transform_allergy_intolerance_3to4(json_data):
     allergy_intolerance_3 = AllergyIntoleranceSTU3.parse_obj(json_data)

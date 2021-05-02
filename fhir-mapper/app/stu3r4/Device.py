@@ -1,7 +1,7 @@
 from fhir.resources.STU3.device import (Device as DeviceSTU3)
 from fhir.resources.device import (Device as DeviceR4, DeviceUdiCarrier, DeviceDeviceName, DeviceVersion)
 from fhir.resources.meta import (Meta)
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 device_name_4 = [
         {

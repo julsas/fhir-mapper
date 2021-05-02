@@ -1,7 +1,7 @@
 from fhir.resources.STU3.specimen import (Specimen as SpecimenSTU3)
 from fhir.resources.specimen import (Specimen as SpecimenR4)
 from fhir.resources.meta import Meta
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 def transform_specimen_3to4(json_data):
     specimen_3 = SpecimenSTU3.parse_obj(json_data)

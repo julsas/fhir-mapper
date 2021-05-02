@@ -2,7 +2,7 @@ from fhir.resources.STU3.observation import (Observation as ObservationSTU3)
 from fhir.resources.observation import (Observation as ObservationR4)
 from fhir.resources.meta import Meta
 from fhir.resources.annotation import Annotation
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 observation = {
     "resourceType": "Observation",

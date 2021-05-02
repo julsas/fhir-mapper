@@ -1,7 +1,7 @@
 from fhir.resources.STU3.deviceusestatement import (DeviceUseStatement as DeviceUseStatementSTU3)
 from fhir.resources.deviceusestatement import (DeviceUseStatement as DeviceUseStatementR4)
 from fhir.resources.meta import (Meta)
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 device_use_statement = {
   "resourceType": "DeviceUseStatement",

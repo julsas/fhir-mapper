@@ -1,24 +1,23 @@
-from fhir.resources.bundle import Bundle
-import app.Bundle
-from app.Composition import transform_composition_3to4
-from app.Immunization import transform_immunization_3to4
-from app.ImagingStudy import transform_imaging_study_3to4
-from app.DiagnosticReport import transform_diagnostic_report_3to4
-from app.DeviceUseStatement import transform_device_use_statement_3to4
-from app.Device import transform_device_3to4
-from app.AllergyIntolerance import transform_allergy_intolerance_3to4
-from app.Condition import transform_condition_3to4
-from app.Media import transform_media_3to4
-from app.OperationOutcome import resource_type_not_supported
-from app.Organization import transform_organization_3to4
-from app.Patient import transform_patient_3to4
-from app.Observation import transform_observation_3to4
-from app.Medication import transform_medication_3to4
-from app.MedicationStatement import transform_medication_statement_3to4
-from app.Practitioner import transform_practitioner_3to4
-from app.PractitionerRole import transform_practitioner_role_3to4
-from app.Procedure import transform_procedure_3to4
-from app.Specimen import transform_specimen_3to4
+import app.stu3r4.Bundle
+from app.stu3r4.Composition import transform_composition_3to4
+from app.stu3r4.Immunization import transform_immunization_3to4
+from app.stu3r4.ImagingStudy import transform_imaging_study_3to4
+from app.stu3r4.DiagnosticReport import transform_diagnostic_report_3to4
+from app.stu3r4.DeviceUseStatement import transform_device_use_statement_3to4
+from app.stu3r4.Device import transform_device_3to4
+from app.stu3r4.AllergyIntolerance import transform_allergy_intolerance_3to4
+from app.stu3r4.Condition import transform_condition_3to4
+from app.stu3r4.Media import transform_media_3to4
+from app.stu3r4.OperationOutcome import resource_type_not_supported
+from app.stu3r4.Organization import transform_organization_3to4
+from app.stu3r4.Patient import transform_patient_3to4
+from app.stu3r4.Observation import transform_observation_3to4
+from app.stu3r4.Medication import transform_medication_3to4
+from app.stu3r4.MedicationStatement import transform_medication_statement_3to4
+from app.stu3r4.Practitioner import transform_practitioner_3to4
+from app.stu3r4.PractitionerRole import transform_practitioner_role_3to4
+from app.stu3r4.Procedure import transform_procedure_3to4
+from app.stu3r4.Specimen import transform_specimen_3to4
 
 def transform_inline_resource(json_data):
     if json_data['resourceType'] == 'Medication':

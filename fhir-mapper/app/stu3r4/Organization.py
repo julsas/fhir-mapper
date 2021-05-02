@@ -1,7 +1,7 @@
 from fhir.resources.STU3.organization import (Organization as OrganizationSTU3)
 from fhir.resources.organization import (Organization as OrganizationR4)
 from fhir.resources.meta import Meta
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 def transform_organization_3to4(json_data):
     organization_3 = OrganizationSTU3.parse_obj(json_data)

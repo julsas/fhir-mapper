@@ -3,7 +3,7 @@ from fhir.resources.media import (Media as MediaR4)
 from fhir.resources.meta import (Meta)
 from fhir.resources.codeableconcept import CodeableConcept
 from fhir.resources.coding import Coding
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 media_example = {
   "resourceType" : "Media",

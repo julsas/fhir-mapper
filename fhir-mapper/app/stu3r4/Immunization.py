@@ -3,7 +3,7 @@ from fhir.resources.immunization import (Immunization as ImmunizationR4, Immuniz
 from fhir.resources.meta import (Meta)
 from fhir.resources.extension import (Extension)
 from fhir.resources.fhirprimitiveextension import (FHIRPrimitiveExtension)
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 immunization_example = {
   "resourceType": "Immunization",

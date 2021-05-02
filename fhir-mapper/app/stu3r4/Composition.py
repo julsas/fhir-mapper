@@ -1,7 +1,7 @@
 from fhir.resources.STU3.composition import (Composition as CompositionSTU3)
 from fhir.resources.composition import (Composition as CompositionR4, CompositionAttester)
 from fhir.resources.meta import Meta
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 composition_example = {
   "resourceType": "Composition",

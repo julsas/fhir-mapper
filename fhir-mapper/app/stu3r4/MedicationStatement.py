@@ -4,7 +4,7 @@ from fhir.resources.medicationstatement import (MedicationStatement as Medicatio
 from fhir.resources.dosage import (Dosage, DosageDoseAndRate)
 from fhir.resources.timing import (Timing, TimingRepeat)
 from fhir.resources.meta import Meta
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 medication_statement = {
     "resourceType": "MedicationStatement",

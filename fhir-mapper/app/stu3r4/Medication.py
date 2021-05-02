@@ -1,7 +1,7 @@
 from fhir.resources.STU3.medication import (Medication as MedicationSTU3)
 from fhir.resources.medication import (Medication as MedicationR4, MedicationIngredient as MedicationIngredientR4, MedicationBatch as MedicationBatchR4)
 from fhir.resources.meta import Meta
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 def transform_medication_3to4(json_data):
     medication_3 = MedicationSTU3.parse_obj(json_data)

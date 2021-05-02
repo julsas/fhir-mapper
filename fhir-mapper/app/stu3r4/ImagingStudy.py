@@ -4,7 +4,7 @@ from fhir.resources.meta import (Meta)
 from fhir.resources.identifier import (Identifier)
 from fhir.resources.codeableconcept import (CodeableConcept)
 from fhir.resources.coding import (Coding)
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 import re
 
 imaging_study_example = {

@@ -1,7 +1,7 @@
 from fhir.resources.STU3.diagnosticreport import (DiagnosticReport as DiagnosticReportSTU3)
 from fhir.resources.diagnosticreport import (DiagnosticReport as DiagnosticReportR4)
 from fhir.resources.meta import (Meta)
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 diagnostic_report = {
   "resourceType": "DiagnosticReport",

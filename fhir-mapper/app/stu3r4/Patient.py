@@ -1,7 +1,7 @@
 from fhir.resources.STU3.patient import (Patient as PatientSTU3)
 from fhir.resources.patient import (Patient as PatientR4)
 from fhir.resources.meta import Meta
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 def transform_patient_3to4(json_data):
     patient_3 = PatientSTU3.parse_obj(json_data)

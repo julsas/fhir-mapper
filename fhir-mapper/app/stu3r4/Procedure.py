@@ -1,7 +1,7 @@
 from fhir.resources.STU3.procedure import (Procedure as ProcedureSTU3)
 from fhir.resources.procedure import (Procedure as ProcedureR4, ProcedurePerformer)
 from fhir.resources.meta import Meta
-import app.InlineTransform
+import app.stu3r4.InlineTransform
 
 procedure_example = {
   "resourceType": "Procedure",
