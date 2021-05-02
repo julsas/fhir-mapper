@@ -20,7 +20,7 @@ from app.PractitionerRole import transform_practitioner_role_3to4
 from app.Procedure import transform_procedure_3to4
 from app.Specimen import transform_specimen_3to4
 from flask import Flask, request
-from flask_restful import Api, Resource
+from flask_restful import Api, Resource, Headers
 from logging import FileHandler, WARNING
 
 app = Flask(__name__)
@@ -32,13 +32,18 @@ file_handler.setLevel(WARNING)
 
 app.logger.addHandler(file_handler)
 
+headers = Headers()
+headers.add('Accept', 'application/fhir+json; fhirVersion=4.0')
+headers.add('Content-Type', 'application/fhir+json; fhirVersion=4.0')
+
 class CapabilityStatement(Resource):
     def get(self):
         resource = create_capabiliy_statement()
         response = app.response_class(
             response=resource.json(),
             status=200,
-            mimetype='application/fhir+json'
+            headers=headers,
+            mimetype='application/fhir+json, fhirVersion=4.0'
         )
         return response
 
@@ -49,7 +54,8 @@ class Patient(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
-            mimetype='application/fhir+json'
+            headers=headers,
+            mimetype='application/fhir+json; fhirVersion=4.0'
         )
         return response
 
@@ -60,6 +66,7 @@ class Medication(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -71,6 +78,7 @@ class MedicationStatement(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -82,6 +90,7 @@ class Observation(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -93,6 +102,7 @@ class Condition(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -104,6 +114,7 @@ class AllergyIntolerance(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -115,6 +126,7 @@ class Device(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -126,6 +138,7 @@ class DeviceUseStatement(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -137,6 +150,7 @@ class DiagnosticReport(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -148,6 +162,7 @@ class ImagingStudy(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -159,6 +174,7 @@ class Immunization(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -170,6 +186,7 @@ class Media(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -181,6 +198,7 @@ class Organization(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -192,6 +210,7 @@ class PractitionerRole(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -203,6 +222,7 @@ class Composition(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -214,6 +234,7 @@ class Practitioner(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -225,6 +246,7 @@ class Procedure(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -236,6 +258,7 @@ class Specimen(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -247,6 +270,7 @@ class Bundle(Resource):
         response = app.response_class(
             response=transformed_resource.json(),
             status=200,
+            headers=headers,
             mimetype='application/fhir+json'
         )
         return response
@@ -258,7 +282,8 @@ class ArbitraryEndpoint(Resource):
         response = app.response_class(
             response=transformed_resource,
             status=200,
-            mimetype='application/fhir+json'
+            headers=headers,
+            mimetype='application/fhir+json; fhirVersion=4.0'
         )
         return response
 
