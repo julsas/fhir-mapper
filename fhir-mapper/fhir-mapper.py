@@ -23,9 +23,13 @@ from app.stu3r4.Procedure import transform_procedure_3to4
 from app.stu3r4.Specimen import transform_specimen_3to4
 from flask import Flask, request
 from flask_restful import Api, Resource, Headers
-import logging
-import traceback
 from logging import FileHandler, WARNING
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+ENV_PORT = os.getenv('PORT')
 
 app = Flask(__name__)
 
@@ -453,7 +457,7 @@ api.add_resource(Bundle, "/Bundle/<operation>")
 api.add_resource(ArbitraryEndpoint, "/ArbitraryResource/<operation>")
 
 if __name__ == "__main__":
-    #app.run(host='0.0.0.0', port=5000)
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=ENV_PORT)
+    #app.run(debug=True)
 
     
