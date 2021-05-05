@@ -1,6 +1,6 @@
-# ![logo](/fhir-mapper/images/logo.png) Janus App
+# Janus App
 
-An extensible Python application that implements the FHIR® RESTful API to transform resources between different versions of FHIR or custom formats to FHIR.
+![logo](/fhir-mapper/images/logo.png) An extensible Python application that implements the FHIR® RESTful API to transform resources between different versions of FHIR or custom formats to FHIR.
 
 ## Info
 * This application is build with the Python Flask framework and implements a set of resources and interface interactions as defined by the HL7® FHIR® standard. It acts as a FHIR server and supports RESTful transactions using a HTTP request/response pattern. The primary focus of this API is to offer conversion capabilities and perform data transformations on the server-side. Currently, it converts from version STU3 to R4 of FHIR and supports the following resource types:
