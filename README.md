@@ -1,4 +1,4 @@
-# fhir-connector
+# ![logo](/fhir-mapper/images/logo.png) Janus App
 
 An extensible Python application that implements the FHIR® RESTful API to transform resources between different versions of FHIR or custom formats to FHIR.
 
