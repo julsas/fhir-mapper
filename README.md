@@ -30,7 +30,7 @@ This application is build with the Python Flask framework and implements a set o
 The scope covers the resource types used by the International Patient Summary (IPS). 
 
 ## Prerequisites
-* Python >3.X
+* Python >3.6
 * Flask
 * fhir.resources library
 
