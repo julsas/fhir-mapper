@@ -1,0 +1,78 @@
+{
+	"resourceType": "ConceptMap",
+	"id": "conceptmap-atc-snomed",
+	"url": "https://hpi.de/fhir/ConceptMap/atc-snomed",
+	"version": "0.1.0",
+	"name": "ATCtoSNOMED",
+	"title": "ATC to SNOMED ConceptMap",
+	"status": "draft",
+	"experimental": true,
+	"date": "2021-05-16",
+	"publisher": "Hasso Plattner Institute for Digital Health",
+	"description": "Maps ATC WHO to SNOMED CT",
+	"sourceUri": "http://www.whocc.no/atc",
+	"targetUri": "http://snomed.info/sct",
+	"group": [
+		{
+			"source": "http://www.whocc.no/atc",
+			"target": "http://snomed.info/sct",
+			"element": [
+				{
+					"code": "N02BE01",
+					"display": "paracetamol",
+					"target": [
+						{
+							"code": "777067000",
+							"display": "Product containing only paracetamol (medicinal product)",
+							"equivalence": "equivalent"
+						}
+					]
+				},
+				{
+					"code": "B01AC06",
+					"display": "acetylsalicylic acid",
+					"target": [
+						{
+							"code": "7947003",
+							"display": "Product containing aspirin (medicinal product)",
+							"equivalence": "equivalent"
+						}
+					]
+				},
+				{
+					"code": "A10BA02",
+					"display": "metformin",
+					"target": [
+						{
+							"code": "109081006",
+							"display": "Product containing metformin (medicinal product)",
+							"equivalence": "equivalent"
+						}
+					]
+				},
+				{
+					"code": "A03FA01",
+					"display": "metoclopramide",
+					"target": [
+						{
+							"code": "56549003",
+							"display": "Product containing metoclopramide (medicinal product)",
+							"equivalence": "equivalent"
+						}
+					]
+				},
+				{
+					"code": "M01AE01",
+					"display": "ibuprofen",
+					"target": [
+						{
+							"code": "776287003",
+							"display": "Product containing only ibuprofen (medicinal product)",
+							"equivalence": "equivalent"
+						}
+					]
+				}
+			]
+		}
+	]
+}

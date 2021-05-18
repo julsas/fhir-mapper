@@ -95,6 +95,11 @@ class Medication(Resource):
                 transformed_resource = transform_medication_3to4(resource)
             except Exception as e:
                 transformed_resource = error_handler(e)
+        elif operation == '$transform-and-translate-3to4':
+            try:
+                transformed_resource = transform_medication_3to4(resource, translate=True)
+            except Exception as e:
+                transformed_resource = error_handler(e)
         else:
             transformed_resource = operation_type_not_supported()
         response = app.response_class(
