@@ -1,10 +1,23 @@
 version: "3.9"  # optional since v1.27.0
+
 services:
+  
   fhir-mapper:
-    build: .
+    build: ./fhir-mapper
+    container_name: fhir-mapper
+    restart: always
+    environment:
+      - APP_NAME=fhir-mapper
+    #expose:
+    #  - 8080
+    #volumes:
+    #  - fhir-mapper-log:/fhir-mapper
+#volumes:
+  #fhir-mapper-log: {}
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    restart: always
     ports:
-      - ${PORT}:${PORT}
-    volumes:
-      - fhir-mapper-log:/fhir-mapper
-volumes:
-  fhir-mapper-log: {}
+      - ${PORT}:80

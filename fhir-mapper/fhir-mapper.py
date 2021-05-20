@@ -462,7 +462,8 @@ api.add_resource(Bundle, "/Bundle/<operation>")
 api.add_resource(ArbitraryEndpoint, "/ArbitraryResource/<operation>")
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=ENV_PORT)
+    app.run(host='0.0.0.0', port=5000)
     #app.run(debug=True)
+    #app.run()
 
     
