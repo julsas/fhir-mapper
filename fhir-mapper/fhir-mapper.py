@@ -23,8 +23,10 @@ from app.stu3r4.Procedure import transform_procedure_3to4
 from app.stu3r4.Specimen import transform_specimen_3to4
 from flask import Flask, request
 from flask_restful import Api, Resource, Headers
-from logging import FileHandler, WARNING
+from logging import DEBUG, INFO, WARNING, FileHandler, StreamHandler, getLogger
+from logging.config import dictConfig
 from dotenv import load_dotenv
+import sys
 import os
 
 load_dotenv()
@@ -35,8 +37,27 @@ app = Flask(__name__)
 
 api = Api(app)
 
-file_handler = FileHandler('log.txt')
-file_handler.setLevel(WARNING)
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+    }},
+    'handlers': {'wsgi': {
+        'class': 'logging.StreamHandler',
+        'stream': 'ext://sys.stdout',
+        'formatter': 'default'
+    }},
+    'root': {
+        'level': 'INFO',
+        'handlers': ['wsgi']
+    }
+})
+
+handler = StreamHandler(sys.stdout)
+app.logger = getLogger('werkzeug')
+
+file_handler = FileHandler('fhir-mapper/log.txt')
+file_handler.setLevel(DEBUG)
 
 app.logger.addHandler(file_handler)
 
@@ -71,17 +92,20 @@ class OperationDefinition(Resource):
 
 class Patient(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_patient_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json; fhirVersion=4.0'
         )
@@ -89,22 +113,27 @@ class Patient(Resource):
 
 class Medication(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_medication_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         elif operation == '$transform-and-translate-3to4':
             try:
                 transformed_resource = transform_medication_3to4(resource, translate=True)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -112,17 +141,20 @@ class Medication(Resource):
 
 class MedicationStatement(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_medication_statement_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -130,17 +162,20 @@ class MedicationStatement(Resource):
 
 class Observation(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_observation_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -148,17 +183,20 @@ class Observation(Resource):
 
 class Condition(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_condition_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -166,17 +204,20 @@ class Condition(Resource):
 
 class AllergyIntolerance(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_allergy_intolerance_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -184,17 +225,20 @@ class AllergyIntolerance(Resource):
 
 class Device(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_device_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -202,17 +246,20 @@ class Device(Resource):
 
 class DeviceUseStatement(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_device_use_statement_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -220,17 +267,20 @@ class DeviceUseStatement(Resource):
 
 class DiagnosticReport(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_diagnostic_report_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -238,17 +288,20 @@ class DiagnosticReport(Resource):
 
 class ImagingStudy(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_imaging_study_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=404,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -256,17 +309,20 @@ class ImagingStudy(Resource):
 
 class Immunization(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_immunization_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -274,17 +330,20 @@ class Immunization(Resource):
 
 class Media(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_media_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -292,17 +351,20 @@ class Media(Resource):
 
 class Organization(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_organization_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -310,17 +372,20 @@ class Organization(Resource):
 
 class PractitionerRole(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_practitioner_role_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -328,17 +393,20 @@ class PractitionerRole(Resource):
 
 class Composition(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_composition_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -346,17 +414,20 @@ class Composition(Resource):
 
 class Practitioner(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_practitioner_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -364,17 +435,20 @@ class Practitioner(Resource):
 
 class Procedure(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_procedure_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -382,17 +456,20 @@ class Procedure(Resource):
 
 class Specimen(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_specimen_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -400,17 +477,20 @@ class Specimen(Resource):
 
 class Bundle(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_bundle_3to4(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource.json(),
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json'
         )
@@ -418,17 +498,20 @@ class Bundle(Resource):
 
 class ArbitraryEndpoint(Resource):
     def post(self, operation):
-        resource = request.get_json()
+        resource = request.get_json(silent=True)
         if operation == '$transform-3to4':
             try:
                 transformed_resource = transform_arbitrary_resource(resource)
+                status=200
             except Exception as e:
                 transformed_resource = error_handler(e)
+                status=400
         else:
             transformed_resource = operation_type_not_supported()
+            status=404
         response = app.response_class(
             response=transformed_resource,
-            status=200,
+            status=status,
             headers=headers,
             mimetype='application/fhir+json; fhirVersion=4.0'
         )
