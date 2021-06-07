@@ -21,11 +21,12 @@ from app.stu3r4.Practitioner import transform_practitioner_3to4
 from app.stu3r4.PractitionerRole import transform_practitioner_role_3to4
 from app.stu3r4.Procedure import transform_procedure_3to4
 from app.stu3r4.Specimen import transform_specimen_3to4
-from flask import Flask, request
+from flask import Flask, request, render_template
 from flask_restful import Api, Resource, Headers
 from logging import DEBUG, INFO, WARNING, FileHandler, StreamHandler, getLogger
 from logging.config import dictConfig
 from dotenv import load_dotenv
+from time import sleep
 import sys
 import os
 
@@ -56,7 +57,7 @@ dictConfig({
 handler = StreamHandler(sys.stdout)
 app.logger = getLogger('werkzeug')
 
-file_handler = FileHandler('fhir-mapper/log.txt')
+file_handler = FileHandler('log.txt')
 file_handler.setLevel(DEBUG)
 
 app.logger.addHandler(file_handler)
@@ -519,7 +520,24 @@ class ArbitraryEndpoint(Resource):
 
 @app.route("/")
 def home():
-    return "This is the base url of a FHIR server. Get started with the CapabilityStatement with GET {base-url}/metadata."
+    #return "This is the base url of a FHIR server. Get started with the CapabilityStatement with GET {base-url}/metadata."
+    return render_template('index.html')
+
+@app.route("/ast")
+def home2():
+    #return "This is the base url of a FHIR server. Get started with the CapabilityStatement with GET {base-url}/metadata."
+    with open(os.path.join(os.path.dirname(__file__), 'log.txt')) as f:
+        return render_template('log.html')
+
+@app.route('/log')
+def stream():
+    def generate():
+        with open(os.path.join(os.path.dirname(__file__), 'log.txt')) as f:
+            while True:
+                yield f.read()
+                sleep(1)
+
+    return app.response_class(generate(), mimetype='text/plain')
 
 api.add_resource(CapabilityStatement, "/metadata")
 api.add_resource(OperationDefinition, "/OperationDefinition", endpoint="search")

@@ -10,10 +10,8 @@ services:
       - APP_NAME=fhir-mapper
     #expose:
     #  - 8080
-    #volumes:
-    #  - fhir-mapper-log:/fhir-mapper
-#volumes:
-  #fhir-mapper-log: {}
+    volumes:
+      - fhir-mapper-log:/fhir-mapper
 
   nginx:
     build: ./nginx
@@ -21,3 +19,7 @@ services:
     restart: always
     ports:
       - ${PORT}:80
+
+volumes:
+  fhir-mapper-log:
+    driver: local
