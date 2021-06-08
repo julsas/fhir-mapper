@@ -9,7 +9,7 @@ services:
     environment:
       - APP_NAME=fhir-mapper
     #expose:
-    #  - 8080
+    #  - 5000
     volumes:
       - fhir-mapper-log:/fhir-mapper
 
