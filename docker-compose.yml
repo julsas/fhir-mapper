@@ -47,12 +47,13 @@ services:
     - /var/lib/docker/containers:/fluentd/log/containers # Example: Reading docker logs
     # - /fluentd/fluent.conf:/fluentd/etc/fluent.conf
     - ./logs:/output/ # Example: Fluentd will collect logs and store it here for demo
+    # - serverlogs:/output/
     logging:
       driver: "local"
     ports:
       - "24224:24224"
       - "24224:24224/udp"
 
-#volumes:
-#  serverlogs:
-#    driver: local
+volumes:
+  serverlogs:
+    driver: local

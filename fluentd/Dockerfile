@@ -1,8 +1,8 @@
 FROM fluent/fluentd:v1.13-1
 
-#USER root
-#RUN mkdir -p /var/log
+USER root
+RUN mkdir -p ./logs
 
 COPY fluent.conf /fluentd/etc/
 
-#USER fluent
+USER fluent
