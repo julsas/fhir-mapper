@@ -34,10 +34,6 @@ load_dotenv()
 
 ENV_PORT = os.getenv('PORT')
 
-app = Flask(__name__)
-
-api = Api(app)
-
 dictConfig({
     'version': 1,
     'formatters': {'default': {
@@ -54,14 +50,35 @@ dictConfig({
     }
 })
 
+app = Flask(__name__)
+
+api = Api(app)
+
+#dictConfig({
+#    'version': 1,
+#    'formatters': {'default': {
+#        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+#    }},
+#    'handlers': {'wsgi': {
+#        'class': 'logging.StreamHandler',
+#        'stream': 'ext://sys.stdout',
+#        'formatter': 'default'
+#    }},
+#    'root': {
+#        'level': 'INFO',
+#        'handlers': ['wsgi']
+#    }
+#})
+
 handler = StreamHandler(sys.stdout)
 app.logger = getLogger('werkzeug')
+app.logger.addHandler(handler)
 
 #file_handler = FileHandler(os.path.join(os.path.dirname(__file__), 'log.txt'))
-file_handler = FileHandler('log.txt')
-file_handler.setLevel(DEBUG)
+#file_handler = FileHandler('log.txt')
+#file_handler.setLevel(DEBUG)
 
-app.logger.addHandler(file_handler)
+#app.logger.addHandler(file_handler)
 
 headers = Headers()
 headers.add('Accept', 'application/fhir+json; fhirVersion=4.0')
@@ -553,7 +570,13 @@ def stream():
 @app.route('/test')
 def test():
     log = open('log.txt').read()
-    return log
+    #return log
+    return render_template('log.html', log=log)
+
+@app.route('/test2')
+def test2():
+    #return log
+    return render_template('test2.html')
 
 api.add_resource(CapabilityStatement, "/metadata")
 api.add_resource(OperationDefinition, "/OperationDefinition", endpoint="search")
