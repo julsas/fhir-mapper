@@ -1,4 +1,4 @@
-# Janus App
+# Janus-Mapper
 
 <img src="/fhir-mapper/images/logo.png" alt="logo" style="float: left; margin-right: 10px;" width="160"/> 
 An extensible Python application that implements the FHIR® RESTful API to transform resources between different versions of FHIR or custom formats to FHIR.
@@ -30,24 +30,19 @@ This application is build with the Python Flask framework and implements a set o
 The scope covers the resource types used by the International Patient Summary (IPS). 
 
 ## Prerequisites
-* Python >3.6
-* Flask
-* fhir.resources library
-
-or
-
 * Docker
 
 ## Usage
-* Running via Python
-    * Clone the repository.
-    * Run `pip install -r requirements.txt` ideally inside a virtual environment.
-    * The `.env` file contains the port where the webserver will be available.
-    The default is set to `5000`, but can be customized.
-    * Run `python fhir-mapper/fhir-mapper.py` and boot the server that runs on `http://0.0.0.0:5000/`.
 * Running via Docker
-    * Customize the webservers port inside the `.env` file or leave the default setting as is. This will also map the port from the container to the port in the host application.
-    * Run `docker compose up`.
+    * Clone the repository.
+    * Customize the webservers port inside the `.env` file or leave the default setting as is. By default the webserver is available on port 8081.
+    * Run `docker compose build && docker compose up`.
+
+* Interact with the API
+    * `GET [base]/metadata` to receive the server's CapabilityStatement
+    * `GET [base]/OperationDefinition` to obtain the defined operations
+    * `POST [base]/[type]/[operation]` to invoke an operation
+    * the default operation to convert STU3 to R4 is `$transform-3to4`  
 
 ## License
 * [MIT](https://tldrlegal.com/license/mit-license)

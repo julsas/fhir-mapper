@@ -1,4 +1,3 @@
-from datetime import (date, datetime)
 from fhir.resources.fhirtypes import (Date)
 from fhir.resources.capabilitystatement import (CapabilityStatement, CapabilityStatementSoftware, CapabilityStatementImplementation, CapabilityStatementRest, CapabilityStatementRestResource, CapabilityStatementRestResourceInteraction, CapabilityStatementRestResourceOperation)
 
@@ -78,13 +77,13 @@ def create_capabiliy_statement():
     capability_statement.publisher = "Hasso Plattner Institute for Digital Health"
     capability_statement.kind = "instance"
     capability_statement_software = CapabilityStatementSoftware.construct()
-    capability_statement_software.name = "Janus App"
+    capability_statement_software.name = "Janus-Mapper"
     capability_statement_software.version = "1.0"
     capability_statement_software.releaseDate = Date(year=2021, month=5, day=1)
     capability_statement.software = capability_statement_software
     capability_statement_implementation = CapabilityStatementImplementation.construct()
-    capability_statement_implementation.description = "Janus app instance"
-    capability_statement_implementation.url = "http://127.0.0.1:5000/"
+    capability_statement_implementation.description = "Janus-Mapper instance"
+    capability_statement_implementation.url = "http://127.0.0.1"
     capability_statement.implementation = capability_statement_implementation
     capability_statement.fhirVersion = "4.0.1"
     capability_statement.format = ["application/fhir+json"]

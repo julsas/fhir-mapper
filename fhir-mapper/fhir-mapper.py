@@ -21,12 +21,11 @@ from app.stu3r4.Practitioner import transform_practitioner_3to4
 from app.stu3r4.PractitionerRole import transform_practitioner_role_3to4
 from app.stu3r4.Procedure import transform_procedure_3to4
 from app.stu3r4.Specimen import transform_specimen_3to4
-from flask import Flask, request, render_template, Response
+from flask import Flask, request, render_template
 from flask_restful import Api, Resource, Headers
-from logging import DEBUG, INFO, WARNING, FileHandler, StreamHandler, getLogger
+from logging import StreamHandler, getLogger
 from logging.config import dictConfig
 from dotenv import load_dotenv
-from time import sleep
 import sys
 import os
 
@@ -54,31 +53,9 @@ app = Flask(__name__)
 
 api = Api(app)
 
-#dictConfig({
-#    'version': 1,
-#    'formatters': {'default': {
-#        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
-#    }},
-#    'handlers': {'wsgi': {
-#        'class': 'logging.StreamHandler',
-#        'stream': 'ext://sys.stdout',
-#        'formatter': 'default'
-#    }},
-#    'root': {
-#        'level': 'INFO',
-#        'handlers': ['wsgi']
-#    }
-#})
-
 handler = StreamHandler(sys.stdout)
 app.logger = getLogger('werkzeug')
 app.logger.addHandler(handler)
-
-#file_handler = FileHandler(os.path.join(os.path.dirname(__file__), 'log.txt'))
-#file_handler = FileHandler('log.txt')
-#file_handler.setLevel(DEBUG)
-
-#app.logger.addHandler(file_handler)
 
 headers = Headers()
 headers.add('Accept', 'application/fhir+json; fhirVersion=4.0')
@@ -541,43 +518,6 @@ def home():
     #return "This is the base url of a FHIR server. Get started with the CapabilityStatement with GET {base-url}/metadata."
     return render_template('index.html')
 
-#@app.route("/ast")
-#def home2():
-#    #return "This is the base url of a FHIR server. Get started with the CapabilityStatement with GET {base-url}/metadata."
-#    #with open(os.path.join(os.path.dirname(__file__), 'log.txt')) as f:
-#    return render_template('log.html')
-#
-#@app.route('/log')
-#def log():
-#    def generate():
-#        #with open(os.path.join(os.path.dirname(__file__), 'log.txt')) as f:
-#        with open('./log.txt') as f:
-#            yield f.read()
-#
-#    return Response(generate(), mimetype='text')
-
-@app.route('/log')
-def stream():
-    def generate():
-        #with open(os.path.join(os.path.dirname(__file__), 'log.txt')) as f:
-        with open('log.txt') as f:
-            while True:
-                yield f.read()
-                sleep(1)
-
-    return app.response_class(generate(), mimetype='text/plain')
-
-@app.route('/test')
-def test():
-    log = open('log.txt').read()
-    #return log
-    return render_template('log.html', log=log)
-
-@app.route('/test2')
-def test2():
-    #return log
-    return render_template('test2.html')
-
 api.add_resource(CapabilityStatement, "/metadata")
 api.add_resource(OperationDefinition, "/OperationDefinition", endpoint="search")
 api.add_resource(OperationDefinition, "/OperationDefinition/<id>", endpoint="instance")
@@ -603,7 +543,3 @@ api.add_resource(ArbitraryEndpoint, "/ArbitraryResource/<operation>")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
-    #app.run(debug=True)
-    #app.run()
-
-    

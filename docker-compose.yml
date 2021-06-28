@@ -8,10 +8,6 @@ services:
     restart: always
     environment:
       - APP_NAME=fhir-mapper
-    #expose:
-    #  - 5000
-    #volumes:
-    #  - serverlogs:/
     links:
       - fluentd
     logging:
@@ -27,8 +23,6 @@ services:
     ports:
       - ${PORT}:80
     volumes:
-    #  - /var/log/serverlogs:/var/log/nginx
-    #  - ./serverlogs:/var/log/nginx
     - serverlogs:/var/log/nginx
     links:
       - fluentd
@@ -40,14 +34,12 @@ services:
 
   fluentd:
     container_name: fluentd
-    #user: root
+    user: root
     build: ./fluentd
     image: fluentd
     volumes:
-    - /var/lib/docker/containers:/fluentd/log/containers # Example: Reading docker logs
-    # - /fluentd/fluent.conf:/fluentd/etc/fluent.conf
-    - ./logs:/output/ # Example: Fluentd will collect logs and store it here for demo
-    # - serverlogs:/output/
+    - ./logs:/output/ 
+    - serverlogs:/output/
     logging:
       driver: "local"
     ports:
