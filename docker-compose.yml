@@ -38,7 +38,7 @@ services:
     build: ./fluentd
     image: fluentd
     volumes:
-    - ./logs:/output/ 
+    # - ./logs:/output/ 
     - serverlogs:/output/
     logging:
       driver: "local"
